@@ -8,7 +8,7 @@ if not cell then
    error("actor ref parent cell is unknown!")
 end
 
-local chest_base = dovah.get_form_by_id(0x02000803)
+local chest_base = dovah.get_form_by_id(0x02000804)
 if not chest_base then
    error("chest base missing!")
 end
