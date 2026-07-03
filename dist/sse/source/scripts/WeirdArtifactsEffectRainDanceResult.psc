@@ -3,6 +3,7 @@ Scriptname WeirdArtifactsEffectRainDanceResult extends ActiveMagicEffect
 Weather Property pkRainyWeather Auto
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
+   Debug.Trace("[Weird Artifacts][Boots of the Rain Dancer] Weather effect starting.")
    pkRainyWeather.SetActive(True, True)
    ;
    ; Limit the duration of the weather override to a few minutes. 
@@ -14,6 +15,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
 EndEvent
 
 Event OnEffectFinish(Actor akTarget, Actor akCaster)
+   Debug.Trace("[Weird Artifacts][Boots of the Rain Dancer] Weather effect finishing.")
    StopRain()
 EndEvent
 
@@ -23,6 +25,7 @@ EndEvent
 
 Function StopRain()
    If Weather.GetCurrentWeather() == pkRainyWeather
+      Debug.Trace("[Weird Artifacts][Boots of the Rain Dancer] Weather is active; stopping.")
       Weather.ReleaseOverride()
    EndIf
 EndFunction

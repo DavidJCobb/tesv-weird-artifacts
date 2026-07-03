@@ -16,8 +16,10 @@ Spell Property pkRainTriggerSpell Auto
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
    If IsInExcludedSpace(akTarget)
+      Debug.Trace("[Weird Artifacts][Boots of the Rain Dancer] Trigger effect refusing to start (we are in an excluded space).")
       Return
    EndIf
+   Debug.Trace("[Weird Artifacts][Boots of the Rain Dancer] Trigger effect is applying weather effect...")
    akTarget.DoCombatSpellApply(pkRainTriggerSpell, akTarget)
 EndEvent
 
