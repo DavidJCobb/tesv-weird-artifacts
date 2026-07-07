@@ -3,7 +3,7 @@ Scriptname WeirdArtifactsSpringLoadedItem extends ObjectReference
 GlobalVariable Property WeirdArtifactsSpringLoadedWineMagSelf Auto
 
 Event OnLoad()
-   Self.RegisterForSingleUpdate(0.25)
+   Self.RegisterForSingleUpdate(2.50)
 EndEvent
 
 Event OnUpdate()
