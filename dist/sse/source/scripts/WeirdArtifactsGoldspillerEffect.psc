@@ -39,10 +39,11 @@ Bool  _bUpdateQueued    = False
 /;
 
 Event OnEffectStart(Actor akTarget, Actor akCaster)
-   akTarget = _kTarget
+   _kTarget = akTarget
    
    _iDropsRemaining = akTarget.GetItemCount(pkCurrencyItem)
    If _iDropsRemaining <= 0
+      Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " has no gold to spill; dispelling.")
       Self.Dispel()
       Return
    EndIf
@@ -52,42 +53,51 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
    
    _fYawPerDrop = 6.283185307 / _iDropsRemaining ; 2pi / count to drop
    
-   Self.AddInventoryEventFilter(pkCurrencyItem)
+   ;Self.AddInventoryEventFilter(pkCurrencyItem) ; doesn't work?
    
+   Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " is about to start dropping gold...")
    ; Setup done; now we start droppin'.
    While _iDropsRemaining > 0
       If !_bUpdateQueued && _iDropsRemaining > 1
          _bUpdateQueued = True
          RegisterForSingleUpdate(0.001)
       EndIf
+      ;Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " is dropping an item from the main call stack...")
       ExecuteSingleDrop()
    EndWhile
+   Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " has finished dropping gold; main stack terminating...")
 EndEvent
 
 Event OnUpdate()
    _bUpdateQueued = False
+   Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " is dropping an item from an update call stack...")
    ExecuteSingleDrop()
 EndEvent
 
 Event OnItemRemoved(Form akBaseItem, int aiItemCount, ObjectReference akItemReference, ObjectReference akDestContainer)
+   If akBaseItem != pkCurrencyItem
+      Return
+   EndIf
    If _iAsyncCallStacks >= 7
       Return
    EndIf
    _iAsyncCallStacks = _iAsyncCallStacks + 1
+   Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " is dropping an item from an async call stack...")
    ExecuteSingleDrop()
-   If _iDropsRemaining <= 0
-      Self.Dispel()
-   EndIf
    _iAsyncCallStacks = _iAsyncCallStacks - 1
 EndEvent
 
 Function ExecuteSingleDrop()
    If _iDropsRemaining <= 0
+      ;Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " is already out of gold; cancelling single drop.")
       Return
    EndIf
    _iDropsRemaining = _iDropsRemaining - 1
    ObjectReference kDropped = _kTarget.DropObject(pkCurrencyItem, 1)
    If kDropped
+      If !kDropped.Is3DLoaded()
+         Utility.Wait(0.05)
+      EndIf
       If kDropped.Is3DLoaded()
          kDropped.ApplyHavokImpulse( \
             Math.cos(_fYawCurrent),  \
@@ -95,6 +105,8 @@ Function ExecuteSingleDrop()
             0.2,                     \
             3.0                      \
          )
+      Else
+         ;Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " dropped a coin, but its 3D didn't load quickly enough; cannot impulse it.")
       Endif
    Else
       ;
@@ -102,12 +114,15 @@ Function ExecuteSingleDrop()
       ; something else removed some)?
       ;
       If _kTarget.GetItemCount(pkCurrencyItem) <= 0
+         Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " ran out of gold early; dispelling.")
          Self.Dispel()
          Return
       EndIf
+      Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " dropped gold, but no ref was created.")
    EndIf
    _fYawCurrent = _fYawCurrent + _fYawPerDrop
    If _iDropsRemaining < 0
+      ;Debug.Trace("[Weird Artifacts][Goldspiller] " + _kTarget + " has dropped as much gold as we wanted them to; dispelling.")
       Self.Dispel()
    EndIf
 EndFunction
