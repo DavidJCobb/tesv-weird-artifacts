@@ -10,7 +10,7 @@ Int Function GetRemainingSpillBudget()
       _StartMonitoringAndWait()
    EndIf
    Int iExtantCoinGroups = WeirdArtifactsGoldspillCounterREF.Count()
-   Int iMaxCoinGroups    = 250
+   Int iMaxCoinGroups    = 140
    If iExtantCoinGroups > iMaxCoinGroups
       Return 0
    EndIf

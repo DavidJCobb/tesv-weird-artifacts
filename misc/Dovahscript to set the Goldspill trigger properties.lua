@@ -10,3 +10,5 @@ ref.extra_data.primitive = {
    bounds = { uGridsToLoad_WorldUnits, uGridsToLoad_WorldUnits, uGridsToLoad_WorldUnits * 2 },
    shape  = "box",
 }
+
+-- TODO: deprecated; we no longer use XPRM/BGSPrimitive+BGSCollisionLayer for this
