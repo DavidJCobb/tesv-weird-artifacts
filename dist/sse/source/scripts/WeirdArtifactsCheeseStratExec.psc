@@ -1,0 +1,20 @@
+Scriptname WeirdArtifactsCheeseStratExec extends ActiveMagicEffect
+
+Potion Property WeirdArtifactsBoundCheeseWheel Auto
+
+Event OnEffectStart(Actor akTarget, Actor akCaster)
+   Float health = akTarget.GetActorValue("Health")
+   Float max    = health / akTarget.GetActorValuePercentage("Health")
+   Float lost   = max - health
+   
+   Float health_restored_per_wheel = 15
+   
+   Int item_count = Math.Ceiling((max - health) / health_restored_per_wheel)
+   Int item_min   = Math.Ceiling(akTarget.GetActorValue("CarryWeight"))
+   If item_count > 0
+      if item_count < item_min
+         item_count = item_min
+      EndIf
+      akTarget.AddItem(WeirdArtifactsBoundCheeseWheel, item_count)
+   EndIf
+EndEvent

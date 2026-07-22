@@ -1,0 +1,7 @@
+Scriptname WeirdArtifactsCheeseStratTrigger extends ActiveMagicEffect
+
+Spell Property WeirdArtifactsCheeseStrategistHelmExecSpell Auto
+
+Event OnEffectStart(Actor akTarget, Actor akCaster)
+   akTarget.DoCombatSpellApply(WeirdArtifactsCheeseStrategistHelmExecSpell, akTarget)
+EndEvent
