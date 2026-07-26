@@ -2,7 +2,13 @@ Scriptname WeirdArtifactsCheeseStratExec extends ActiveMagicEffect
 
 Potion Property WeirdArtifactsBoundCheeseWheel Auto
 
+Spell Property WeirdArtifactsCheeseStrategistHelmRevokeSpell Auto
+
+Actor _kTarget
+
 Event OnEffectStart(Actor akTarget, Actor akCaster)
+   _kTarget = akTarget
+
    Float health = akTarget.GetActorValue("Health")
    Float max    = health / akTarget.GetActorValuePercentage("Health")
    Float lost   = max - health
@@ -16,5 +22,11 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
          item_count = item_min
       EndIf
       akTarget.AddItem(WeirdArtifactsBoundCheeseWheel, item_count)
+      akTarget.DoCombatSpellApply(WeirdArtifactsCheeseStrategistHelmRevokeSpell, akTarget)
    EndIf
+EndEvent
+
+Event OnDying(Actor akKiller)
+   _kTarget.RemoveItem(WeirdArtifactsBoundCheeseWheel, 999999)
+   Debug.Trace("[Weird Artifacts][Cheese Strategist's Helm] Cheese wheels revoked from " + _kTarget + " on death.")
 EndEvent
