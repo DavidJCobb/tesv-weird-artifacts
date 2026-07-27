@@ -23,6 +23,7 @@ Event OnEffectStart(Actor akTarget, Actor akCaster)
       EndIf
       akTarget.AddItem(WeirdArtifactsBoundCheeseWheel, item_count)
       akTarget.DoCombatSpellApply(WeirdArtifactsCheeseStrategistHelmRevokeSpell, akTarget)
+      Debug.Trace("[Weird Artifacts][Cheese Strategist's Helm] " + item_count + " cheese wheels added to " + _kTarget + ".")
    EndIf
 EndEvent
 

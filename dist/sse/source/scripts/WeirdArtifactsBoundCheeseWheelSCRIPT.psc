@@ -1,5 +1,7 @@
 Scriptname WeirdArtifactsBoundCheeseWheelSCRIPT extends ObjectReference
 
+Potion Property WeirdArtifactsBoundCheeseWheel Auto
+
 Bool _bConsumed   = False
 Bool _bDespawning = False
 Bool _bDespawned  = False
@@ -9,25 +11,15 @@ Event OnEquipped(Actor akActor)
 EndEvent
 
 Event OnContainerChanged(ObjectReference akNewContainer, ObjectReference akOldContainer)
-   If _bConsumed || !Self
-      ;
-      ; Eating a cheese wheel from the inventory seems to send a spurious 
-      ; OnContainerChanged event. Attempting to run the despawn code will error 
-      ; since there's no underlying ref anymore.
-      ;
-      Return
-   EndIf
    If akOldContainer
       If akNewContainer
          ;
          ; Container-to-container transfer. Can we erase it from the destination 
          ; container?
          ;
-         SetDestroyed(True) ; disable picking up the cheese wheel
-         DisableNoWait()
-         Delete()
-         akNewContainer.RemoveItem(Self.GetBaseObject(), 999999)
-      Else
+         akNewContainer.RemoveItem(WeirdArtifactsBoundCheeseWheel, 999999)
+         Debug.Trace("[Weird Artifacts][Bound Cheese Wheel] Detected transfer to " + akNewContainer + "; removed all from that container.")
+      ElseIf !_bConsumed
          ;
          ; Item dropped.
          ;
