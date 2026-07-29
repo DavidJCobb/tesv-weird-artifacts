@@ -1,5 +1,6 @@
 Scriptname WeirdArtifactsUtilPlaceLVLI extends ObjectReference
 
+Bool        Property pbDebugLog = False Auto
 LeveledItem Property pkFormToPlace Auto
 Bool        Property pbResetRotation = False Auto
 Float[]     Property pfPositionOffset Auto
@@ -14,7 +15,13 @@ Event OnInit()
          placed.SetAngle(0, 0, 0)
       EndIf
       placed.EnableNoWait()
+      If pbDebugLog
+         Debug.Trace("[Weird Artifacts][Place LVLI] " + Self + " placed " + placed + ".")
+      EndIf
    EndIf
    Self.DisableNoWait()
    Self.Delete()
+   If pbDebugLog
+      Debug.Trace("[Weird Artifacts][Place LVLI] " + Self + " is self-deleting.")
+   EndIf
 EndEvent
