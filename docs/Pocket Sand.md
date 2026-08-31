@@ -20,7 +20,7 @@ Unfortunately, although increasing Blindness *does* impair an actor's ability to
 
 [^alerted]: An actor is "alerted" if they're aware of the potential presence of an enemy due to that enemy having made a sound, without having fully detected that enemy yet.
 
-As such, Pocket Sand also applies a very large negative modifier to the target's Sneak skill. This completely hoses the actor's ability to detect targets; in combination with blindness, it well ensures that the actor won't be able to detect targets except by sound or direct physical contact. However, it also has some negative side effects, including making these actors easier to pickpocket. Additionally, if no one else has come to the target's defense, they may exit combat while still blinded, resuming normal behavior.
+As such, Pocket Sand also applies a very large negative modifier to the target's Sneak skill. This completely hoses the actor's ability to detect targets; in combination with blindness, it well ensures that the actor won't be able to detect targets except by sound or direct physical contact. However, it also has some negative side effects: if no one else has come to the target's defense, they may exit combat while still blinded, resuming normal behavior.
 
 It also must be noted that Blindness only influences an actor's detection, i.e. their awareness of enemies' locations. It doesn't affect their ability to path around the environment, their ability to aim with ranged wepaons and spells, their ability to lead moving targets, their ability to dodge incoming projectiles, or any other abilities that would typically rely heavily on sight.
 
