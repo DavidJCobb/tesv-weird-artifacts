@@ -147,7 +147,7 @@ I don't know what unit of measurement is used for particles. I've found that for
 
 ##### How large are my particles?
 
-Check the Initial Radius and Radius Variation values on the `NiPSysBoxEmitter`.
+Check the Initial Radius and Radius Variation values on the `NiPSysBoxEmitter`. You should ensure that the Initial Radius is the larger of the two values, to avoid the game calculating negative sizes.
 
 Additionally, if the particle system has a `BSPSysScaleModifier`, that can specify scaling values to apply over the particle's lifespan.
 
@@ -173,6 +173,26 @@ Specify the bounding boxes for each sprite (measured in UV coordinates) via the 
 
 If you want to use animated sprites, then you can add a `BSPSysSubTexModifier`. This treats every sprite (subtexture) as a single frame of animation. The meanings of its options aren't fully understood, but after looking at some vanilla NIFs, I believe I can at least say that if you want an animation that doesn't loop, you need to set the End Frame and Loop Start Frame to the same index, and set the Loop Start Frame Fudge to zero.
 
+##### When are my particles emitted?
+
+Whether an emitter (e.g. `NiPSysBoxEmitter`) is active by default is controlled by its "Active" field. However, this is usually overridden by animation controllers.
+
+Your `NiParticleSystem` should have a `NiPSysEmitterCtlr`. This will specify a `NiBlendFloatInterpolator` to control the particle birth rate, and a `NiBlendBoolInterpolator` to control when the emitter is active. If these interpolators have the `MANAGER_CONTROLLED` flag, then the true animation values are provided by other controllers buried in your model's `NiControllerManager`: this means that the birth rate and emitter state can vary depending on what named animation is playing.
+
+When these properties are manager-controlled, the "Controlled Blocks" list for a `NiControllerSequence` (a named animation) will have entries which specify the same `NiPSysEmitterCtlr` but with interpolators unique to the sequence. The "interpolator IDs" will be `BirthRate` and `EmitterActive`.
+
+The birth rate value is measured in seconds. As an example, consider the following data for birth rate, taken from the `fxcobwebexplosion02` NIF:
+
+| Key time | Key value | Quadratic Forward | Quadratic Backward |
+| -: | -: |
+| 0.000000 | 390 |
+| 0.133333 | 390 | 
+| 0.466667 |   0 |
+| 6.666667 |   0 |
+
+This defines a six-second animation. For the first 2/15ths of a second, the birth rate is 390 particles per second, producing about 52 particles in total over those 2/15ths of a second. Over the next third of a second, the birth rate rapidly drops to 0, such that even if the emitter remains active, it won't produce anything.
+
 ##### Where are my particles emitted from?
 
 The `NiPSysBoxEmitter` will specify an Emitter Object (any `NiNode`) and the Width, Height, and Depth of a box-shaped area around that object. Your particles will spawn within that area.
+
