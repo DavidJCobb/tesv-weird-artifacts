@@ -27,7 +27,7 @@ It also must be noted that Blindness only influences an actor's detection, i.e. 
 
 ### Strengthening the illusion
 
-Alongside the blindness-related effects, Pocket Sand also applies a few additional effects just to make itself more noticeable: targets are staggered, and their movement speed is lowered, to help sell the illusion that they're struggling to find their way around.
+Alongside the blindness-related effects, Pocket Sand also applies a few additional effects just to make itself more noticeable: targets are staggered, and their movement speed is lowered, to help sell the illusion that they're struggling to find their way around. Additionally, a subtle particle effect is attached to the actor's head using an Art Object, to make it look like sand is falling out of their eyes.
 
 
 ### The projectile
