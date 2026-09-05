@@ -28,3 +28,14 @@ It also must be noted that Blindness only influences an actor's detection, i.e. 
 ### Strengthening the illusion
 
 Alongside the blindness-related effects, Pocket Sand also applies a few additional effects just to make itself more noticeable: targets are staggered, and their movement speed is lowered, to help sell the illusion that they're struggling to find their way around.
+
+
+### The projectile
+
+...is a mess. Projectile forms are almost completely undocumented, which is a problem because the projectile system is, in my experience, *extremely brittle.* Projectiles that aren't set up exactly as Bethesda's programmers expected will malfunction in a wide variety of ways, which is a problem given that they didn't tell us anything useful about how to set them up.[^useful] At this point, I feel like the only way I'll get any usable amount of information about the projectile system is by poring over every inch of it in a disassembler, which I don't have time to do because I'd like to ship the mod (and DovahKit's alpha with it) first.
+
+[^useful]: The CK wiki lists the abstract meanings of the settings, but offers no definite information. It's full of tautologies, telling us that the "gravity" setting controls how much gravity affects the projectile, and the "speed" setting controls the speed of the projectile, without ever giving us units of measurement or points of reference. The list of projectile types tells us what sorts of things they're used for, but not how they actually *behave.* Nothing outlines exactly when and why projectiles de-spawn, or how their physics and collision are set up and processed. There's a "collision layer" setting, but it's totally undocumented, most projectiles set it to "none," and setting it to, say, the "projectile" collision layer will actually *break* your projectile; so the setting appears to be a pointless footgun. Et cetera, et cetera.
+
+My original plan was to use a particle emitter mesh and some basic "cone" settings. However, cones don't actually seem to register hits on targets unless they're given a very high speed. If I give them a high speed, however, then my particle emitter doesn't render. In the final shipped mesh, I kept the emitter anyway but just glued a barebones "puff of smoke" mesh to the model pivot. That's the only visual effect you can see in-game, and it looks slapdash and boring.
+
+I'd also tried a "flame" projectile, which registered hits far more accurately even with a zero speed, but was never visible at all. I tested a dozen other configurations through trial-and-error tinkering and got a variety of bizarre errors, including projectiles that never registered a collision, never played their animations, *and* never de-spawned.
