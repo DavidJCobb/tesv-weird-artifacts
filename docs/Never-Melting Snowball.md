@@ -149,7 +149,7 @@ I don't know what unit of measurement is used for particles. I've found that for
 
 Check the Initial Radius and Radius Variation values on the `NiPSysBoxEmitter`. You should ensure that the Initial Radius is the larger of the two values, to avoid the game calculating negative sizes.
 
-Additionally, if the particle system has a `BSPSysScaleModifier`, that can specify scaling values to apply over the particle's lifespan.
+Additionally, if the particle system has a `BSPSysScaleModifier`, that can specify scaling values. These *appear* to define an animation, scaling particles' sizes over their lifetimes.
 
 ##### How long do my particles last?
 
@@ -161,9 +161,19 @@ Something to note: I'm not altogether sure how the game decides when an explosio
 
 ##### What color are my particles?
 
-The `NiPSysBoxEmitter` sets particles' initial color. However, a `BSPSysSimpleColorModifier` can alter colors further.
+The `NiPSysBoxEmitter` sets particles' initial color. However, a `BSPSysSimpleColorModifier` can alter colors further, with its properties behaving as follows:
 
-Options on the particle system's `BSEffectShaderProperty` can also influence color, e.g. the emissive color, emissive multiplier, and the "external emittance" shader flag.
+| Name in NifSkope | Name it *should* have | Effect |
+| :- | :- | :- |
+| Fade In Percent | Alpha Intro Fade End | The portion of a particle's lifespan spent transitioning from Color 1's alpha to Color 2's alpha. A value in the range \[0, 1\]. |
+| Fade Out Percent | Alpha Outro Fade Start | The portion of a particle's lifespan at which it begins transitioning from Color 2's alpha to Color 3's alpha. A value in the range \[0, 1\]. |
+| Color 1 End Percent | Color Intro Fade Start | The portion of a particle's lifespan at which it begins transitioning from Color 1's RGB to Color 2's RGB. |
+| Color 1 Start Percent | Color Intro Fade End | The portion of a particle's lifespan at which it finishes transitioning from Color 1's RGB to Color 2's RGB. |
+| Color 2 End Percent | Color Outro Fade Start | The portion of a particle's lifespan at which it begins transitioning from Color 2's RGB to Color 3's RGB. |
+| Color 2 Start Percent | Color Outro Fade End | The portion of a particle's lifespan at which it finishes transitioning from Color 2's RGB to Color 3's RGB. |
+| Colors | Colors | The intro, normal, and outro colors, respectively. |
+
+Options on the particle system's `BSEffectShaderProperty` can also influence color, e.g. the emissive color, emissive multiplier, and the "external emittance" shader flag. Remember that the shader property's "Falloff" options can influence the alpha transparency depending on the angle from which you look at the particles; if you set the Falloff Start Angle, Falloff Stop Angle, Falloff Start Opacity, and Falloff Stop Opacity to 1, 0, 1, and 0, respectively, then the particle's alpha won't decrease depending on camera angle.
 
 ##### What sprites do my particles use?
 
